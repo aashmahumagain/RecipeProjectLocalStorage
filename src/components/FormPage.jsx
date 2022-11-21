@@ -4,13 +4,42 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import useLocalAdd from "./localAdd";
 const FormPage = () => {
+  const { recipedetail, updateR } = useLocalAdd();
+  const [alldetails, setAlldetails] = useState(recipedetail);
   const [form] = Form.useForm();
   const navigate = useNavigate();
   const params = useLocation();
   console.log(params?.state);
-  const ids = params?.state;
-  console.log(ids);
+  const id = params?.state;
+  console.log(id, "idsss ");
   const data = useRef();
+
+  const datafromlocal = localStorage.getItem("Added item");
+  console.log(datafromlocal, "datatatat");
+  const displaydata = () => {};
+
+  let selectObj = alldetails.filter((v) => v.id === id);
+
+  if (selectObj.length == 0) {
+    selectObj = [
+      {
+        dish: "",
+        id: "",
+        ingredient: "",
+        qty: "",
+        unit: "",
+        text: "",
+      },
+    ];
+  }
+
+  console.log(id, "idsdsd");
+  console.log(selectObj, "selectedfield");
+
+  console.log(selectObj[0].dish, "dsisadsa");
+  // const paramData = datafromlocal[id];
+  // console.log(paramData, "paramdatat");
+
   const { setR } = useLocalAdd();
   const onFinish = (values) => {
     setR(values);
@@ -19,6 +48,7 @@ const FormPage = () => {
     //   dish: dish,
     // });
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -79,7 +109,6 @@ const FormPage = () => {
         initialValues={{
           remember: true,
         }}
-        setFields
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
@@ -87,7 +116,6 @@ const FormPage = () => {
         <Form.Item
           label="Name of the dish"
           name="dish"
-          // value={dish}
           rules={[
             {
               required: true,
@@ -98,6 +126,9 @@ const FormPage = () => {
           <Input
             onChange={(e) => {}}
             ref={data}
+            // value={selectObj[0].dish}
+            setFieldsValue={selectObj[0].dish}
+            placeholder={selectObj[0].dish}
             style={{
               width: 300,
             }}
@@ -115,6 +146,7 @@ const FormPage = () => {
           ]}
         >
           <Select
+            placeholder={selectObj[0].ingredient}
             style={{
               width: 300,
             }}
@@ -140,6 +172,7 @@ const FormPage = () => {
           ]}
         >
           <InputNumber
+            placeholder={selectObj[0].qty}
             ref={data}
             style={{
               width: 300,
@@ -158,6 +191,7 @@ const FormPage = () => {
           ]}
         >
           <Select
+            placeholder={selectObj[0].unit}
             style={{
               width: 300,
             }}
@@ -181,7 +215,8 @@ const FormPage = () => {
           }}
         >
           <TextArea
-            placeholder="Steps to Prepare Food"
+            placeholder={selectObj[0].text}
+            // placeholder="Steps to Prepare Food"
             rows={4}
             style={{
               width: 300,

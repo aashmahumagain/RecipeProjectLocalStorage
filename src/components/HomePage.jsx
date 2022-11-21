@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Input, Row } from "antd";
+import { Col, Input, Row, Modal } from "antd";
 import task from "../assets/task.jpg";
 import styled from "styled-components";
 import useLocalAdd from "./localAdd";
@@ -25,18 +25,24 @@ const HomePage = () => {
     console.log(a);
   };
   const removeElement = (id) => {
-    const selectObj = alldata.filter((v) => v.id !== id);
-    setAllData(selectObj);
-    removeR(selectObj);
+    Modal.confirm({
+      title: "are you sure want to delete",
+      okText: "Yes",
+      okType: "danger",
+      onOk: () => {
+        const selectObj = alldata.filter((v) => v.id !== id);
+        setAllData(selectObj);
+        removeR(selectObj);
+      },
+    });
   };
   const editsect = (id) => {
-    navigate(`/form/?q=${id}`, {
+    navigate(`/form?q=${id}`, {
       state: id,
     });
 
     const filtrateobj = alldata.filter((x) => x.id === id);
-
-    console.log(filtrateobj);
+    console.log(filtrateobj, "homepagefiltrate");
   };
 
   return (
@@ -80,13 +86,13 @@ const HomePage = () => {
                     <td>{res.unit}</td>
                     <td>{res.text}</td>
                     <td>
-                      {/* <button
+                      <button
                         onClick={(e) => {
                           editsect(res.id);
                         }}
                       >
                         Edit
-                      </button> */}
+                      </button>
                       <button
                         className="delete-btn"
                         onClick={(e) => {

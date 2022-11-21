@@ -26,6 +26,7 @@ function useLocalAdd() {
   function removeDetails(newArray) {
     localStorage.setItem("Added item", JSON.stringify(newArray));
     setRecipe(newArray);
+    console.log(newArray, "newarrara");
   }
 
   function updateDetails(newArray) {
